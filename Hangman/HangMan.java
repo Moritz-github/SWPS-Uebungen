@@ -5,23 +5,17 @@ import java.util.Scanner;
 public class HangMan {
 	String word;
 	int mistakes_left;
-
 	char[] guessed;
-
 	boolean won = false;
 
-	public HangMan(String word, int tries, boolean autoAsk) {
+	public HangMan(String word, int tries) {
 		this.word = word;
 		this.mistakes_left = tries;
-
 		guessed = new char[word.length()];
-
 		update_render();
-
-		if (autoAsk) {
-			while (this.mistakes_left > 0 && !won) {
-				askUserForChar();
-			}
+		
+		while (this.mistakes_left > 0 && !won) {
+			askUserForChar();
 		}
 	}
 
