@@ -1,1 +1,1 @@
-# SWPS-Uebungen for HTL-Anichstraße
+# SWPS-Uebungen for HTL
