@@ -1,6 +1,8 @@
 import requests
 from datetime import datetime
 from datetime import timedelta
+import matplotlib.pyplot as plt
+import numpy as np
 
 state = "BY"
 startyear = 2020
@@ -14,7 +16,7 @@ class apiHandler():
 
     def get_days_off_one_year(self, year):
         a = requests.get(self.days_off_url.format(str(year), str(state))).json()
-        print(a)
+        #print(a)
         return a
 
     def get_days_off_year_range(self, startyear, endyear):
@@ -57,8 +59,17 @@ for feiertag in feiertage:
         continue
     if feiertag.weekday() in (5,6):
         continue
-    print(feiertag)
+    # print(feiertag)
     freie_wochentage[feiertag.weekday()] += 1
 
+# Console:
 for wochentag in freie_wochentage:
     print(wochentage_dict[wochentag] + ": " + str(freie_wochentage[wochentag]))
+
+# Plotting:
+y_pos = np.arange(len(freie_wochentage.values()))
+plt.bar(y_pos, freie_wochentage.values(), align="center", alpha=0.5)
+plt.xticks(y_pos, ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"])
+plt.ylabel("Freie Tage")
+plt.title("Schultagen an denen ein Feiertag ist von {} bis {}".format(startyear, endyear))
+plt.show()
