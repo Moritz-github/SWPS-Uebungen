@@ -12,6 +12,11 @@ full
 """
 import requests
 import json
+import database
+
+user_symbol = input("Bitte gib eine Aktie an (Apple ... AAPL; Tesla ... TSLA)\n")
+
+db = database.DBManager(user_symbol)
 
 # Read API-Key from Text file
 with open("api-key.txt") as file:
@@ -33,6 +38,18 @@ def request(url):
     return json.loads(requests.get(url).text)
 
 
+def write_close_values_db(symbol):
+    url = URLBuilder(function="TIME_SERIES_DAILY", symbol=symbol)
+    response = request(url)
+    days = response["Time Series (Daily)"]
+
+    for day in days:
+        close = days[day]["4. close"]
+        db.add_value(day, float(close))
+
+        # print("{}: Close: {}".format(day, close))
+
+
 def get_close_values(symbol):
     url = URLBuilder(function="TIME_SERIES_DAILY", symbol=symbol)
     response = request(url)
@@ -42,4 +59,5 @@ def get_close_values(symbol):
         close = days[day]["4. close"]
         print("{}: Close: {}".format(day, close))
 
-print(get_close_values("AAPL"))
+
+print(write_close_values_db(user_symbol))
