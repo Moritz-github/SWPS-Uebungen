@@ -1,8 +1,6 @@
 # importing mysql-connector-python
 import mysql.connector
 
-aktie = "AAPL"
-
 with open("mysql-pwd.txt") as file:
     pwd = file.readlines()[0]
 
@@ -18,8 +16,8 @@ class DBManager:
         )
         self.cursor = self.db.cursor()
 
-        self.cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(self.symbol))
-        self.cursor.execute("USE {}".format(self.symbol))
+        self.cursor.execute("CREATE DATABASE IF NOT EXISTS STOCKDATA")
+        self.cursor.execute("USE STOCKDATA")
         # self.cursor.execute("DROP TABLE {}".format(self.symbol))
         self.cursor.execute("CREATE TABLE IF NOT EXISTS {} ( date DATE PRIMARY KEY, price DECIMAL(15,2) )".format(self.symbol))
 
@@ -35,6 +33,6 @@ class DBManager:
 
 
 if __name__ == "__main__":
-    db = DBManager("AAPL")
+    db = DBManager("TSLA")
     # db.add_value("2020-07-17", 385.3100)
     db.print_all_values()
