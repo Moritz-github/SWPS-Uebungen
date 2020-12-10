@@ -15,7 +15,7 @@ with open("api-key.txt") as file:
     api_key = file.readlines()[0]
 
 
-class URLBuilder():
+class URLBuilder:
     def __init__(self, function, symbol, outputsize="compact",
                  base_url="https://www.alphavantage.co/query?function={}&symbol={}&outputsize={}&apikey={}"):
         self.function = function
