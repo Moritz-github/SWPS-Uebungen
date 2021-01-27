@@ -1,2 +1,2 @@
 # StockDataSave
-Saves Stock Data from the https://www.alphavantage.co API and writes it to a MySQL Database
+Saves Stock Data from the https://www.alphavantage.co API and writes it to a MySQL Database, also draws a cool chart with it
