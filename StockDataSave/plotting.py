@@ -17,6 +17,8 @@ def plot_chart(days_count, db, user_symbol):
             x_axis.append(day)
         i += 1
 
+    print(x_axis)
+
     ax = plt.axes()
 
     if values[1] > avg_values[1]:
