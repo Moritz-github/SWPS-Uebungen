@@ -14,11 +14,16 @@ def get_daily_prices(symbol, function="TIME_SERIES_DAILY_ADJUSTED", outputsize="
     print("Sending request to {}".format(url))
     response = send_request_get_json(url)
     days = response["Time Series (Daily)"]
+    daily_prices = []
     for day in days:
-        open = days[day]["1. open"]
-        high = days[day]["2. high"]
-        low = days[day]["3. low"]
-        close = days[day]["4. close"]
-        volume = days[day]["6. volume"]
+        values = days[day]
+        open = values["1. open"]
+        high = values["2. high"]
+        low = values["3. low"]
+        close = values["4. close"]
+        volume = values["6. volume"]
+        dividend = values["7. dividend amount"]
+        split = values["8. split coefficient"]
 
-        yield DailyPrices(day, open, high, low, close, volume)
+        daily_prices.append(DailyPrices(day, open, high, low, close, volume, dividend, split))
+    return daily_prices
