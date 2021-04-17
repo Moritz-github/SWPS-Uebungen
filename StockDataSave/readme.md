@@ -1,2 +1,7 @@
 # StockDataSave
-Saves Stock Data from the https://www.alphavantage.co API and writes it to a MySQL Database, also draws a cool chart with it
+Automatically saves stock data from the https://www.alphavantage.co API, then writes it to a MySQL database, can also:
+* draw cool charts with it
+***
+Plans:
+* calculate past earnings on investments
+* calculate past earnings for different trading strategies

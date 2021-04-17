@@ -2,14 +2,24 @@ import scrape
 
 
 def scrape_and_save_raw_prices_to_db(db):
-    print("Downloading and saving prices to db")
-    prices = []
+    compact_prices = scrape.get_daily_prices(db.symbol)
+    if db.get_day((compact_prices[0]).datestring).close == -1:
+        if db.get_day(compact_prices[-1].datestring).close == -1:
+            print("More than 100 Days missing, downloading all data")
 
-    for daily_prices in scrape.get_daily_prices(db.symbol, outputsize="full"):
-        db.insert_raw(daily_prices)
+            prices = []
 
-        prices.append(daily_prices)
-    print(f"Added {len(prices)} rows to the {db.symbol} table in the database")
+            for daily_prices in scrape.get_daily_prices(db.symbol, outputsize="full"):
+                db.insert_raw(daily_prices)
+
+                prices.append(daily_prices)
+            print(f"Added {len(prices)} rows to the {db.symbol}_raw table in the database")
+        else:
+            print("Database not up to date, less than 100 days missing")
+            for day in compact_prices:
+                db.insert_raw(day)
+    else:
+        print("Database up to date")
 
 
 def analyze_data_and_save_to_db(db):
@@ -32,7 +42,7 @@ def analyze_data_and_save_to_db(db):
 
     # 200 AVG
     for dailyprice in dailyprices[:-200]:
-        dailyprice.avg200 = db.calc_200_average(dailyprice.datestring)
+        db.calc_average(dailyprice.datestring, 200)
 
     # Write to DB
     for dailyprice in dailyprices:

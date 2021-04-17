@@ -11,7 +11,7 @@ full
 """
 
 # Read API-Key from Text file
-with open("api-key.txt") as file:
+with open("config/api-key.txt") as file:
     api_key = file.readlines()[0]
 
 

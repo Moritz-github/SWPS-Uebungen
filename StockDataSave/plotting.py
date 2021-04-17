@@ -5,10 +5,9 @@ from datetime import datetime, timedelta, date
 
 def create_chart(start_date, end_date, db, filename=""):
     data = db.get_values(start_date, end_date)
-    print(data[0])
     dates = [x.datestring for x in data]
     closes = [x.close for x in data]
-    avg200s = [x.avg200 for x in data]
+    avg200s = [db.calc_average(x.datestring, 200) for x in data]
 
     fig, ax = plt.subplots()
     ax.plot(dates, closes, label="Close Values")
@@ -17,6 +16,11 @@ def create_chart(start_date, end_date, db, filename=""):
     ax.set(xlabel="Date", ylabel="Close value adjusted", title=db.symbol)
     ax.grid()
     fig.autofmt_xdate()
+
+    if closes[1] > avg200s[1]:
+        ax.set_facecolor((.1, .5, .1, .4))
+    else:
+        ax.set_facecolor((.5,.1,.1, .6))
 
     plt.legend()
     if filename == "":
