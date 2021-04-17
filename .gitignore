@@ -7,3 +7,4 @@ bin/
 api-key.txt
 mysql-pwd.txt
 __pycache__/
+charts/
