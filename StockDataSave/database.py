@@ -3,7 +3,7 @@ import mysql.connector
 from datetime import datetime, timedelta
 import DailyPrices
 
-with open("config/mysql-pwd.txt") as file:
+with open("../config/mysql-pwd.txt") as file:
     pwd = file.readlines()[0]
 
 
@@ -107,6 +107,12 @@ class DBManager:
 
     def get_day(self, date):
         self.cursor.execute('select * from {}_calc where date like ("{}")'.format(self.symbol, date))
+        for x in self.cursor:
+            return DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7])
+        return DailyPrices.DailyPrices(-1, -1, -1, -1, -1, -1, -1, -1)
+
+    def get_closest_day(self, date):
+        self.cursor.execute('select * from {}_calc where date <= ("{}") ORDER BY DATE DESC LIMIT 1'.format(self.symbol, date))
         for x in self.cursor:
             return DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7])
         return DailyPrices.DailyPrices(-1, -1, -1, -1, -1, -1, -1, -1)
