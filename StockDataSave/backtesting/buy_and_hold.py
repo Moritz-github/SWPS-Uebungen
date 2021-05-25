@@ -1,7 +1,8 @@
 import datetime
 import database
 
-symbol = input("Bei welcher Aktie wollen Sie ein Investment Simulieren? (z.B. Apple ... AAPL; Tesla ... TSLA; Amazon "
+symbol = input("Bei welcher Aktie wollen Sie ein Investment Simulieren? "
+               "(z.B. Apple ... AAPL; Tesla ... TSLA; Amazon "
                "... AMZN)\n")
 
 start_date = datetime.datetime.strptime(input('Investment-Datum (z.B. "2010-01-01"): '), "%Y-%m-%d").date()
@@ -18,8 +19,9 @@ start_dailyprice = db.get_closest_day(start_date)
 end_dailyprice = db.get_closest_day(end_date)
 print(start_dailyprice.datestring)
 
-investment_return = investment_amount * (end_dailyprice.close / start_dailyprice.close)
+investment_return = investment_amount * float(end_dailyprice.close / start_dailyprice.close)
 
-print(f"Ein investment in {symbol} von {investment_amount:.0f}€ am {start_dailyprice.datestring} für {start_dailyprice.close:.2f}"
+print(f"Ein investment in {symbol} von {investment_amount:.0f}€ am {start_dailyprice.datestring} für "
+      f"{start_dailyprice.close:.2f}"
       f"€/Aktie,\nverkauft am {end_dailyprice.datestring} für {end_dailyprice.close:.2f}€/Aktie\nwären nun "
       f"{investment_return:.2f}€. (Rendiete: {(investment_return/investment_amount)*100 -100:.2f}%)")

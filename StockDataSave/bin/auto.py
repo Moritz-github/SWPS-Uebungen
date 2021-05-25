@@ -15,9 +15,9 @@ with open("../config/config.txt") as file:
 for symbol in symbols:
     db = database.DBManager(symbol)
 
-    data_handler.scrape_and_save_raw_prices_to_db(db)
-    print("Analyzing data")
-    data_handler.analyze_data_and_save_to_db(db)
+    if not data_handler.scrape_and_save_raw_prices_to_db(db):
+        print("Analyzing data")
+        data_handler.analyze_data_and_save_to_db(db)
 
     filename = "charts\\{}-{}.png".format(symbol, datetime.datetime.now().strftime("%d-%m-%Y"))
     plotting.create_chart(start_date, end_date, db, filename)

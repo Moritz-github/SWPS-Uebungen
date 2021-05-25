@@ -2,7 +2,6 @@ from datetime import datetime
 import database
 import plotting
 import data_handler
-import scrape
 
 
 symbol = input("Bitte gib eine Aktie an (z.B. Apple ... AAPL; Tesla ... TSLA; Amazon ... AMZN)\n")

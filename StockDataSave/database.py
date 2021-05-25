@@ -96,6 +96,17 @@ class DBManager:
             days.append(DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]))
         return days
 
+    def get_all_values(self, desc=False):
+        if not desc:
+            self.cursor.execute("SELECT * FROM {}_calc;".format(self.symbol))
+        else:
+            self.cursor.execute("SELECT * FROM {}_calc order by DATE Desc;".format(self.symbol))
+
+        days = []
+        for x in self.cursor:
+            days.append(DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]))
+        return days
+
     def get_values(self, start_date, end_date):
         self.cursor.execute('SELECT * FROM {}_calc where date > "{}" and date < "{}";'.
                             format(self.symbol, start_date, end_date))
@@ -104,6 +115,13 @@ class DBManager:
         for x in self.cursor:
             days.append(DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]))
         return days
+
+    def get_raw_day(self, date):
+        self.cursor.execute('SELECT * FROM {} where date like ("{}");'.format(self.symbol, date))
+
+        for x in self.cursor:
+            return DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7])
+        return DailyPrices.DailyPrices(-1, -1, -1, -1, -1, -1, -1, -1)
 
     def get_day(self, date):
         self.cursor.execute('select * from {}_calc where date like ("{}")'.format(self.symbol, date))

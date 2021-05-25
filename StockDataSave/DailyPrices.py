@@ -1,3 +1,6 @@
+import datetime
+
+
 class DailyPrices:
     def __init__(self, datestring, open_value, high, low, close, volume, dividend, split):
         self.datestring = datestring
@@ -9,6 +12,9 @@ class DailyPrices:
         self.symbol = ""
         self.dividend = dividend
         self.split = split
+
+    def get_date(self):
+        return datetime.datetime.strptime(self.datestring, "%Y-%m-%d").date()
 
     def __str__(self):
         return '''"Daily Prices of {}": {{

@@ -20,6 +20,7 @@ def scrape_and_save_raw_prices_to_db(db):
                 db.insert_raw(day)
     else:
         print("Database up to date")
+        return True
 
 
 def analyze_data_and_save_to_db(db):
@@ -29,7 +30,7 @@ def analyze_data_and_save_to_db(db):
     # Split correction
     for i in range(0, len(dailyprices)):
         splitvalue = float(dailyprices[i].split)
-        if splitvalue != 0.0:
+        if splitvalue != 1.0:
             for j in range(i+1, len(dailyprices)):
                 dailyprices[j].open /= splitvalue
                 dailyprices[j].high /= splitvalue
@@ -43,7 +44,3 @@ def analyze_data_and_save_to_db(db):
     # 200 AVG
     for dailyprice in dailyprices[:-200]:
         db.calc_average(dailyprice.datestring, 200)
-
-    # Write to DB
-    for dailyprice in dailyprices:
-        db.insert(dailyprice)

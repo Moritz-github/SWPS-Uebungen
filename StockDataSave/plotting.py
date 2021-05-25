@@ -1,9 +1,10 @@
-import matplotlib
 import matplotlib.pyplot as plt
-from datetime import datetime, timedelta, date
+import matplotlib.dates as mdates
 
 
-def create_chart(start_date, end_date, db, filename=""):
+def create_chart(start_date, end_date, db, filename="", points=None):
+    if points is None:
+        points = []
     data = db.get_values(start_date, end_date)
     dates = [x.datestring for x in data]
     closes = [x.close for x in data]
@@ -20,10 +21,13 @@ def create_chart(start_date, end_date, db, filename=""):
     if closes[1] > avg200s[1]:
         ax.set_facecolor((.1, .5, .1, .4))
     else:
-        ax.set_facecolor((.5,.1,.1, .6))
+        ax.set_facecolor((.5, .1, .1, .6))
+
+    for i in range(0, len(points) - len(points) % 2, 2):
+        plt.axvspan(mdates.date2num(points[i]), mdates.date2num(points[i + 1]), color="green", alpha=0.5)
 
     plt.legend()
     if filename == "":
         plt.show()
     else:
-        plt.savefig(filename)
+        plt.savefig("..\\" + filename)
