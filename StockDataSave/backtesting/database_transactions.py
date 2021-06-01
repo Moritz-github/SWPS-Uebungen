@@ -19,6 +19,8 @@ class TransactionsDBManager:
         else:
             self.table_name = table_name
 
+        print(f"Using table '{self.table_name}'")
+
         self.db = mysql.connector.connect(
             host="localhost",
             user="root",

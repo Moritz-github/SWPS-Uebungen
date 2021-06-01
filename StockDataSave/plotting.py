@@ -11,7 +11,9 @@ def create_chart(start_date, end_date, db, filename="", points=None):
     avg200s = [db.calc_average(x.datestring, 200) for x in data]
 
     fig, ax = plt.subplots()
-    ax.plot(dates, closes, label="Close Values")
+    mark = [dates.index(i) for i in points if i in dates]
+
+    ax.plot(dates, closes, label="Close Values", markevery=mark, marker="o")
     ax.plot(dates, avg200s, label="200 Averages")
 
     ax.set(xlabel="Date", ylabel="Close value adjusted", title=db.symbol)
