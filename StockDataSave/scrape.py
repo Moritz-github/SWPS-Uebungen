@@ -3,16 +3,36 @@ import json
 from URLBuilder import URLBuilder
 from DailyPrices import DailyPrices
 from pprint import pprint
+import time
+
+class APIFrequency(Exception):
+    def __init__(self, message="The ALPHAVANTAGE API allows max 5 requests/minute. Waiting 1 minute."):
+        super().__init__(message)
+
+class SymbolNotFound(Exception):
+    def __init__(self, message="Symbol not Found!"):
+        super().__init__(message)
 
 
 def send_request_get_json(url):
-    return json.loads(requests.get(url).text)
+    text = requests.get(url).text
+    if "Our standard API call frequency is 5 calls per minute and 500 calls per day" in text:
+        raise APIFrequency
+    if "Invalid API call." in text:
+        raise SymbolNotFound
+    return json.loads(text)
 
 
 def get_daily_prices(symbol, function="TIME_SERIES_DAILY_ADJUSTED", outputsize="compact"):
     url = URLBuilder(function=function, symbol=symbol, outputsize=outputsize)
     print("Sending request to {}".format(url))
-    response = send_request_get_json(url)
+    while True:
+        try:
+            response = send_request_get_json(url)
+            break
+        except APIFrequency:
+            print("API Frequency error. Wating 10 secs")
+            time.sleep(10)
     days = response["Time Series (Daily)"]
     daily_prices = []
     for day in days:

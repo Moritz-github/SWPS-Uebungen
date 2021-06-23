@@ -26,6 +26,7 @@ class DBManager:
 
     def close(self):
         self.cursor.close()
+        self.db.close()
 
     def init_tables(self):
         # Raw Data table
@@ -118,6 +119,13 @@ class DBManager:
 
     def get_raw_day(self, date):
         self.cursor.execute('SELECT * FROM {} where date like ("{}");'.format(self.symbol, date))
+
+        for x in self.cursor:
+            return DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7])
+        return DailyPrices.DailyPrices(-1, -1, -1, -1, -1, -1, -1, -1)
+
+    def get_closest_raw_day(self, date):
+        self.cursor.execute('SELECT * FROM {} where date < ("{}") order by DATE DESC LIMIT 1;'.format(self.symbol, date))
 
         for x in self.cursor:
             return DailyPrices.DailyPrices(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7])

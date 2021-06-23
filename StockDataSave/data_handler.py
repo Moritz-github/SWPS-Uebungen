@@ -27,6 +27,7 @@ def analyze_data_and_save_to_db(db):
     dailyprices = db.get_all_raw_values(desc=True)
     avg_values = []
 
+    print("Split corretion")
     # Split correction
     for i in range(0, len(dailyprices)):
         splitvalue = float(dailyprices[i].split)
@@ -37,10 +38,12 @@ def analyze_data_and_save_to_db(db):
                 dailyprices[j].low /= splitvalue
                 dailyprices[j].close /= splitvalue
 
+    print("Write to BD")
     # Write to DB
     for dailyprice in dailyprices:
         db.insert(dailyprice)
-
+    print("Done writing to DB")
+    '''
     # 200 AVG
     for dailyprice in dailyprices[:-200]:
-        db.calc_average(dailyprice.datestring, 200)
+        db.calc_average(dailyprice.datestring, 200)'''

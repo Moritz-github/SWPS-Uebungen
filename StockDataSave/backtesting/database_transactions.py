@@ -19,7 +19,7 @@ class TransactionsDBManager:
         else:
             self.table_name = table_name
 
-        print(f"Using table '{self.table_name}'")
+        # print(f"Using table '{self.table_name}'")
 
         self.db = mysql.connector.connect(
             host="localhost",
@@ -59,6 +59,12 @@ class TransactionsDBManager:
 
     def get_alltime_latest_transaction(self):
         self.cursor.execute('SELECT * FROM `{}` ORDER BY ID DESC LIMIT 1;'.format(self.table_name))
+        for x in self.cursor:
+            return Transaction(x[0], x[1], x[2], x[3], x[4], x[5])
+        return Transaction(-1, -1, -1, -1, -1, -1)
+
+    def get_alltime_first_transaction(self):
+        self.cursor.execute('SELECT * FROM `{}` ORDER BY ID ASC LIMIT 1;'.format(self.table_name))
         for x in self.cursor:
             return Transaction(x[0], x[1], x[2], x[3], x[4], x[5])
         return Transaction(-1, -1, -1, -1, -1, -1)

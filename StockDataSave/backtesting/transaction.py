@@ -11,4 +11,4 @@ class Transaction:
         self.depotkonto = depotkonto
 
     def __str__(self):
-        return f"{self.id}, {self.date}, {self.symbol}, {self.buy_flag}, {self.count}, {self.depotkonto}"
+        return f"{self.id}, {self.date}, {self.symbol}, {self.buy_flag}, {self.count}, {self.depotkonto:.2f}"
