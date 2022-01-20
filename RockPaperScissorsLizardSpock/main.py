@@ -1,8 +1,8 @@
 import pickle
-import os.path
 import api_service
 
-def rock_paper_scissors_lizard_shpock(ch1, ch2):
+
+def rock_paper_scissors_lizard_spock(ch1, ch2):
     if ch1 is ch2:
         return Winner.draw
 
@@ -51,8 +51,10 @@ class Winner:
     player_1 = 1
     player_2 = 2
 
+
 def print_choices():
     print("""rock = 0, paper = 1, scissors = 2, lizard = 3, spock = 4""")
+
 
 def get_input(player_num):
     while True:
@@ -65,7 +67,6 @@ def get_input(player_num):
             print("Invalid input (0 - 4 only)")
             continue
         return int(user_input)
-
 
 
 def note_wins(winner_choice):
@@ -87,12 +88,13 @@ def note_wins(winner_choice):
         with open("wins.pkl", "wb") as file:
             pickle.dump([0 for x in range(0,5)], file)
 
+
 if __name__ == "__main__":
     while True:
         choice1 = get_input(1)
         print()
         choice2 = get_input(2)
-        winner = rock_paper_scissors_lizard_shpock(choice1, choice2)
+        winner = rock_paper_scissors_lizard_spock(choice1, choice2)
         if winner is Winner.draw:
             print("Game ended in a draw")
         else:
