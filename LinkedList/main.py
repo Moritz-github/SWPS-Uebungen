@@ -1,71 +1,33 @@
-class Node:
-    def __init__(self, data=None, next=None):
-        self.data = data
-        self.next = next
- 
- 
-def printList(head):
-    nxt = head
-    while nxt:
-        print(nxt.data, end=' -> ')
-        nxt = nxt.next
-    print('None')
- 
- 
-def sortedMerge(a, b):
-    if a is None:
-        return b
-    elif b is None:
-        return a
- 
-    if a.data <= b.data:
-        result = a
-        result.next = sortedMerge(a.next, b)
-    else:
-        result = b
-        result.next = sortedMerge(a, b.next)
- 
-    return result
- 
- 
-def frontBackSplit(source):
-    if source is None or source.next is None:
-        return source, None
+class Datapoint:
+    def __init__(self):
+        self.data = None
+        self.next = None
 
-    slow = source
-    fast = source.next
-    
-    while fast:
-        fast = fast.next
-        if fast:
-            slow = slow.next
-            fast = fast.next
- 
-    ret = (source, slow.next)
-    slow.next = None
- 
-    return ret
- 
- 
-def mergesort(head):
-    if head is None or head.next is None:
-        return head
- 
-    front, back = frontBackSplit(head)
- 
-    front = mergesort(front)
-    back = mergesort(back)
- 
-    return sortedMerge(front, back)
- 
- 
-if __name__ == '__main__':
-    keys = [8, 6, 4, 9, 3, 1]
- 
-    head = None
-    for key in keys:
-        head = Node(key, head)
- 
-    head = mergesort(head)
- 
-    printList(head)
+
+class LinkedList:
+    def __init__(self):
+        self.dp = Datapoint()
+
+    def setValuesFromList(self, values, next_dp=None):
+        if next_dp is None:
+            next_dp = self.dp
+
+        next_dp.data = values.pop(0)
+        if len(values) != 0:
+            next_dp.next = Datapoint()
+            self.setValuesFromList(values, next_dp.next)
+
+    def getLast(self, next_dp=None):
+        next_dp = self.dp if next_dp is None else next_dp
+
+        if next_dp.next is not None:
+            return self.getLast(next_dp.next)
+        return next_dp
+
+
+if __name__=="__main__":
+    nums = [2, 3, 2, 8, 6, 4]
+    linkedList = LinkedList()
+    linkedList.setValuesFromList(nums)
+    print(linkedList.dp.data)
+    print(linkedList.getLast().data)
