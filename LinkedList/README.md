@@ -1,4 +1,4 @@
-| Methode | O() performance Doubly Linked List | O() performance ArrayList (array.array) |
+| method | O() performance Doubly Linked List | O() performance ArrayList (array.array) |
 | -------- | -------- | -------- |
 | append   | n   | n   |
 | remove   | n   | n   |
